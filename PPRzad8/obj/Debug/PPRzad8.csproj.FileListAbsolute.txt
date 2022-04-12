@@ -1,0 +1,10 @@
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\bin\Debug\PPRzad8.exe.config
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\bin\Debug\PPRzad8.exe
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\bin\Debug\PPRzad8.pdb
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\obj\Debug\PPRzad8.csprojAssemblyReference.cache
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\obj\Debug\PPRzad8.Form1.resources
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\obj\Debug\PPRzad8.Properties.Resources.resources
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\obj\Debug\PPRzad8.csproj.GenerateResource.cache
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\obj\Debug\PPRzad8.csproj.CoreCompileInputs.cache
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\obj\Debug\PPRzad8.exe
+C:\Users\KibaraN\source\repos\PPRzad8\PPRzad8\obj\Debug\PPRzad8.pdb
