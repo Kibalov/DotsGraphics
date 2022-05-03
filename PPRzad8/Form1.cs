@@ -116,7 +116,7 @@ namespace PPRzad8
             double xmin = chart1.Series[0].Points.FindMinByValue("X", 0).XValue;
             double ymax = chart1.Series[0].Points.FindMaxByValue("Y", 0).YValues[0];
             double ymin = chart1.Series[0].Points.FindMinByValue("Y", 0).YValues[0];
-            if (x > xmin && x < xmax && y < ymax && y > ymin)
+            if (x >= xmin && x <= xmax && y <= ymax && y >= ymin)
             {
                 obl1 = true;
             }
@@ -128,13 +128,31 @@ namespace PPRzad8
             double x0 = (chart1.Series[1].Points.FindMaxByValue("X", 0).XValue + chart1.Series[1].Points.FindMinByValue("X", 0).XValue) / 2;
             double y0 = (chart1.Series[1].Points.FindMaxByValue("Y", 0).YValues[0] + chart1.Series[1].Points.FindMinByValue("Y", 0).YValues[0]) / 2;
 
+            //Рисуем круг
+            for (int i = 0; i < 50; i++)
+            {
+                double cirx = (a / 2 - a * 0.02 * i);
+                double ciry = Math.Sqrt((1 - Math.Pow(cirx, 2) / Math.Pow(a / 2, 2)) * Math.Pow(b / 2, 2));
+                //if (i % 10 == 0)
+                //    MessageBox.Show(cirx + " " + ciry);
+                chart1.Series[6].Points.AddXY((cirx + x0), (ciry + y0) );
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                double cirx = (-a/2 + a * 0.02 * i);
+                double ciry = -Math.Sqrt((1 - Math.Pow(cirx, 2) / Math.Pow(a / 2, 2)) * Math.Pow(b / 2, 2));
+                //if (i % 10 == 0)
+                //    MessageBox.Show(cirx + " " + ciry);
+                chart1.Series[6].Points.AddXY((cirx + x0) , (ciry + y0));
+            }
+
             chart1.Series[5].Points.AddXY(x0, y0);
             x -= x0;
             y -= y0;
             //MessageBox.Show(x+" "+y+" "+a+" "+b+" "+x0+" "+y0);
 
             bool obl2 = false;
-            if ((Math.Pow(x,2)/Math.Pow(a/2,2) + Math.Pow(y, 2) / Math.Pow(b/2, 2)) <= 1)
+            if ((Math.Pow(x, 2) / Math.Pow(a / 2, 2) + Math.Pow(y, 2) / Math.Pow(b / 2, 2)) <= 1)
                 obl2 = true;
 
             if (obl1 && obl2)
@@ -145,6 +163,67 @@ namespace PPRzad8
                 MessageBox.Show("Точка попадает во вторую область");
             else
                 MessageBox.Show("Точка не попадает ни в какую область");
+
+
+            int error1 = 0, error2 = 0;
+            for (int i = 0; i < 100; i++)
+            {
+                double x1 = chart1.Series[0].Points[i].XValue;
+                double y1 = chart1.Series[0].Points[i].YValues[0];
+                if ((Math.Pow((x1 - x0), 2) / Math.Pow(a / 2 , 2) + Math.Pow((y1 - y0), 2) / Math.Pow(b / 2 , 2)) <= 1)
+                    error1++;
+
+                double x2 = chart1.Series[1].Points[i].XValue;
+                double y2 = chart1.Series[1].Points[i].YValues[0];
+                if (x2 >= xmin && x2 <= xmax && y2 <= ymax && y2 >= ymin)
+                    error2++;
+            }
+            MessageBox.Show("Ошибок первого рода: "+ error1+"\nОшибок второго рода: "+ error2);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            chart1.Series[7].Points.Clear();
+            chart1.Series[8].Points.Clear();
+
+            double x = Convert.ToDouble(textBox3.Text);
+            double y = Convert.ToDouble(textBox4.Text);
+
+            int[] blizz1 = new int[100];
+            int[] blizz2 = new int[100];
+            for (int i = 0; i < 100; i++)
+            {
+                blizz1[i] = (int)Math.Sqrt(Math.Pow(x - chart1.Series[0].Points[i].XValue, 2) + Math.Pow(y - chart1.Series[0].Points[i].YValues[0], 2));
+                chart1.Series[7].Points.AddXY(x,y);
+                chart1.Series[7].Points.AddXY(chart1.Series[0].Points[i].XValue, chart1.Series[0].Points[i].YValues[0]);
+                blizz2[i] = (int)Math.Sqrt(Math.Pow(x - chart1.Series[1].Points[i].XValue, 2) + Math.Pow(y - chart1.Series[1].Points[i].YValues[0], 2));
+                chart1.Series[8].Points.AddXY(x, y);
+                chart1.Series[8].Points.AddXY(chart1.Series[1].Points[i].XValue, chart1.Series[1].Points[i].YValues[0]);
+            }
+            Array.Sort(blizz1);
+            Array.Sort(blizz2);
+
+            int score1 = 0, score2 = 0, iter1=0, iter2=0;
+            for(int i = 0; i < Convert.ToDouble(textBox5.Text); i++)
+            {
+                if (blizz1[iter1] < blizz2[iter1])
+                {
+                    score1++;
+                    iter1++;
+                }
+                else
+                {
+                    score2++;
+                    iter2++;
+                }
+            }
+            if (score1 > score2)
+                MessageBox.Show("Принадлежит группе 1");
+            else if (score1 < score2)
+                MessageBox.Show("Принадлежит группе 2");
+            else
+                MessageBox.Show("Сложно определить:( поставьте большее кол-во точек для сравнения");
+
         }
     }
 }
